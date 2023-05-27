@@ -1,4 +1,3 @@
-import type { QRL } from "@builder.io/qwik";
 import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 
 export default component$(() => {
@@ -24,7 +23,7 @@ const Nav = ({
   theme,
   onChangeTheme,
 }: {
-  onChangeTheme: QRL<(event: Event) => void>;
+  onChangeTheme: any;
   theme: "dark" | "light";
 }) => {
   return (
