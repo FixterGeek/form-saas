@@ -55,10 +55,11 @@ export default component$(() => {
     <>
       <Nav user={user} theme={theme.value} onChangeTheme={onChangeTheme} />
       <main class={`${theme.value}`}>
-        <section class="bg-slate-500 dark:bg-slate-900 dark:text-slate-400 py-20 min-h-screen">
+        <section class="bg-[white] dark:bg-[#0F1017] dark:text-slate-400 py-20 min-h-screen text-[#121826]">
           <Slot />
         </section>
       </main>
+      <Footer />
     </>
   );
 });
@@ -111,3 +112,34 @@ const Nav = component$(
     );
   }
 );
+
+
+
+const Footer = () => {
+  return (
+    <div class=" bg-[#0F1017] dark:bg-[white] ">
+      <div class="max-w-6xl  mx-auto py-8">
+        <div class=" flex justify-between ">
+          <p>logo</p>
+          <div class="flex gap-8 font-light">
+            <p>Planes</p>
+            <p>Preguntas frecuentes</p>
+            <p>Contacto</p>
+          </div>
+          <div class="flex gap-2">
+            <p>f</p>
+            <p>t</p>
+            <p>yt</p>
+          </div>
+        </div>
+        <hr class="my-6 bg-[#2E2E2E] dark:bg-[#2E2E2E] h-[1px] border-none" />
+        <div class="flex justify-center gap-8 font-light opacity-[.5]">
+          <p>© 2023 Formy Reserved</p>
+          <p>Política de privacidad</p>
+          <p>Términos y condiciones</p>
+        </div>
+      </div>
+
+    </div>
+  )
+}

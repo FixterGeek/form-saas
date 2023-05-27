@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.activeLight {
+    background-color: white;
+    color: #121826;
+}
