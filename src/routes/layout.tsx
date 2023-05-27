@@ -52,15 +52,15 @@ export default component$(() => {
   });
 
   return (
-    <>
+    <main class={`${theme.value}`}>
       <Nav user={user} theme={theme.value} onChangeTheme={onChangeTheme} />
-      <main class={`${theme.value}`}>
+      <section>
         <section class="bg-[white] dark:bg-[#0F1017] dark:text-slate-400 py-20 min-h-screen text-[#121826]">
           <Slot />
         </section>
-      </main>
+      </section>
       <Footer />
-    </>
+    </main>
   );
 });
 
@@ -113,8 +113,6 @@ const Nav = component$(
   }
 );
 
-
-
 const Footer = () => {
   return (
     <div class=" bg-[#0F1017] dark:bg-[white] ">
@@ -139,7 +137,6 @@ const Footer = () => {
           <p>Términos y condiciones</p>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
