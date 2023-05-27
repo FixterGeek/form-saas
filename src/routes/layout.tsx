@@ -5,6 +5,7 @@ import {
   routeLoader$,
 } from "@builder.io/qwik-city";
 import db, { type UserType } from "~/db/db";
+import { BsFacebook } from "react-icons/bs"
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 
@@ -77,7 +78,7 @@ const Nav = component$(
     const action = useGoogleOAuth2();
 
     return (
-      <nav class="bg-white flex justify-between px-12 py-4 items-center h-20 rounded-full shadow-md my-4 fixed w-full top-0">
+      <nav class="bg-white dark:bg-[#0F1017] flex justify-between px-12 py-4 items-center h-20  fixed w-full top-0 z-20">
         <h2 class="font-bold uppercase">Forms</h2>
         <div class="flex items-center gap-4">
           {/* Need to redirecto to dash */}
@@ -115,9 +116,9 @@ const Nav = component$(
 
 const Footer = () => {
   return (
-    <div class=" bg-[#0F1017] dark:bg-[white] ">
+    <div class=" bg-white dark:bg-[#0F1017] ">
       <div class="max-w-6xl  mx-auto py-8">
-        <div class=" flex justify-between ">
+        <div class=" flex justify-between text-[#0F1017] dark:text-[#e5e7eb] ">
           <p>logo</p>
           <div class="flex gap-8 font-light">
             <p>Planes</p>
@@ -126,12 +127,13 @@ const Footer = () => {
           </div>
           <div class="flex gap-2">
             <p>f</p>
+
             <p>t</p>
             <p>yt</p>
           </div>
         </div>
-        <hr class="my-6 bg-[#2E2E2E] dark:bg-[#2E2E2E] h-[1px] border-none" />
-        <div class="flex justify-center gap-8 font-light opacity-[.5]">
+        <hr class="my-6 bg-[#E1E0E0] dark:bg-[#2E2E2E] h-[1px] border-none" />
+        <div class="flex justify-center gap-8 font-light opacity-[.5] text-[#7A8495] dark:text-[#A1A8BB]">
           <p>© 2023 Formy Reserved</p>
           <p>Política de privacidad</p>
           <p>Términos y condiciones</p>

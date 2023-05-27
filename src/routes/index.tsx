@@ -1,10 +1,15 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import styles from "../../styles/app.css";
+import "../styles/app.css";
+import { TbForms } from "react-icons/tb"
 
+const arrow = "https://firebasestorage.googleapis.com/v0/b/fixter-67253.appspot.com/o/forms%2FArrow%20Right%20(2).gif?alt=media&token=6e606528-cd49-41e6-9985-4f8eb90fedc5"
 const form = "https://i.imgur.com/SWfEgJN.png"
 const icon = "https://i.imgur.com/zxeiNqq.png"
 export default component$(() => {
+
+  const activeTab = useSignal(1);
+
   return (
     <main class="max-w-6xl mx-auto py-20 px-4">
       <section class='h-[80vh]'>
@@ -17,7 +22,8 @@ export default component$(() => {
       </section>
       <section class='text-center py-28'>
         <h2 class="dark:text-[#E7E8EC] text-[#0F1017] text-4xl md:text-5xl mb-6"><span class='font-bold'>Elige tu</span> favorito</h2>
-        <p class="dark:text-[#7D7D84] text-[#7D7D84] text-xl md:text-2xl font-light">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
+        <p class=" text-xl md:text-2xl font-light  text-[#7D7D84] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
+
         <div class='flex flex-wrap justify-center gap-20 mt-16'>
           <div class='w-full lg:w-[500px] text-left' >
             <img class='object-cover h-[360px] w-full rounded-md mb-6' src={form} />
@@ -33,7 +39,7 @@ export default component$(() => {
       </section>
       <section class='text-center py-28'>
         <h2 class="color-red text-4xl md:text-5xl mb-6 dark:text-[#e5e7eb] text-[#0F1017]">Crea tu form <span class='font-bold'>en 3 clics</span> </h2>
-        <p class=" text-xl md:text-2xl font-light  text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
+        <p class=" text-xl md:text-2xl font-light  text-[#7D7D84] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
         <div class='flex flex-wrap justify-center gap-20 mt-16'>
           <div class='flex flex-col gap-16 justify-center'>
             <div class='flex items-center gap-4'>
@@ -65,57 +71,141 @@ export default component$(() => {
       </section >
       <section class='text-center py-28'>
         <h2 class="color-red text-4xl md:text-5xl mb-6 dark:text-[#e5e7eb] text-[#0F1017]">Escoge <span class='font-bold'>tu plan</span> </h2>
-        <p class=" text-xl md:text-2xl font-light  text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
-        <div class="tabs bg-[#EDEDF1] w-[240px] h-[56px] rounded-full mt-16 ">
-          <a class="tab">Tab 1</a>
-          <a class="tab activeLight ">Tab 2</a>
-        </div>
-        <div class="flex flex-wrap gap-20 justify-center mt-8">
-          <div class="border-solid border-[1px] rounded-xl border-[#E1E0E0] dark:border-[#2E2E2E] w-[360px] py-[32px] px-6 text-left">
-            <h3 class='text-2xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>Basic</h3>
-            <p class='text-[#4B5563] dark:text-[#7D7D84] mb-4 font-light'>Lorem ipsum dolor sit amet consectetur. Risus ut feugiat.</p>
-            <p> <span class='text-4xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>$9 </span><span class='text-lg '> USD / mes</span></p>
-            <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-            <div class='flex items-center gap-4 mb-6'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
+        <p class=" text-xl md:text-2xl font-light  text-[#7D7D84] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet consectetur. Velit nisi congue diam nibh duis. Et quis posuere eu urna tortor. Felis eget eu amet amet a. Ullamcorper odio nibh egestas mi. Quis in eros imperdiet enim sed laoreet tincidunt. Id dictumst arcu.</p>
+
+        <div class="flex justify-center relative">
+          <div class="tabs bg-[#EDEDF1] w-[240px] h-[56px] rounded-full mt-16 flex items-center justify-center">
+            <a class={activeTab.value === 1 ? 'activeLight' : 'inactiveTab'} onClick$={() => {
+              activeTab.value = 1
+            }}>Mensual</a>
+            <div class="absolute left-[52%] top-[-18px] flex">
+
+              <img class="  w-[120px]" src={arrow} />
+              <p class="text-[#F2C94C] mt-[26px] ml-[-32px]">¡Ahorra 20%!</p>
+
             </div>
-            <div class='flex items-center gap-4 mb-6'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
-            </div>
-            <div class='flex items-center gap-4'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
-            </div>
-            <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-            <button class='btn w-full'>¡Empezar!</button>
-          </div>
-          <div class="border-solid border-[1px] rounded-xl border-[#E1E0E0] dark:border-[#2E2E2E] w-[360px] py-[32px] px-6 text-left">
-            <h3 class='text-2xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>PRO</h3>
-            <p class='text-[#4B5563] dark:text-[#7D7D84] mb-4 font-light'>Lorem ipsum dolor sit amet consectetur. Risus ut feugiat.</p>
-            <p> <span class='text-4xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>$15 </span><span class='text-lg '> USD / mes</span></p>
-            <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-            <div class='flex items-center gap-4 mb-6'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
-            </div>
-            <div class='flex items-center gap-4 mb-6'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
-            </div>
-            <div class='flex items-center gap-4'>
-              <img class='h-10' src={icon} />
-              <h4 class="text-[#4B5563] dark:text-[#7D7D84]">Lorem ipsum dolor sit amet conse</h4>
-            </div>
-            <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-            <button class='btn w-full'>¡Empezar!</button>
+            <a class={activeTab.value === 2 ? 'activeLight' : 'inactiveTab'} onClick$={() => {
+              activeTab.value = 2
+            }} >Anual</a>
           </div>
         </div>
+
+        {activeTab.value === 1 &&
+          <div class="flex flex-wrap gap-20 justify-center mt-8">
+            <PricingCard
+              name="Free"
+              description="Lorem ipsum dolor sit amet conse"
+              price="0"
+              benefits={[
+                {
+                  emoji: "📋",
+                  title: "1 solo proyecto"
+                },
+                {
+                  emoji: "💬",
+                  title: "Mensajes ilimitados"
+                },
+                {
+                  emoji: "📧",
+                  title: "Notificaciones vía email"
+                },
+                {
+                  emoji: "🎯",
+                  title: "Dashboard para administrar tus mensajes"
+                },
+
+              ]}
+            />
+            <PricingCard
+              name="PRO"
+              description="Lorem ipsum dolor sit amet conse"
+              price="10"
+              benefits={[
+                {
+                  emoji: "📋",
+                  title: "Proyectos ilimitados"
+                },
+                {
+                  emoji: "💬",
+                  title: "Mensajes ilimitados"
+                },
+                {
+                  emoji: "📧",
+                  title: "Notificaciones vía email"
+                },
+                {
+                  emoji: "🎨",
+                  title: "Personalización de formularios"
+                },
+                {
+                  emoji: "🎯",
+                  title: "Dashboard para administrar tus mensajes"
+                }
+              ]}
+            />
+          </div>
+        }
+        {activeTab.value === 2 &&
+          <div class="flex flex-wrap gap-20 justify-center mt-8">
+            <PricingCard
+              name="Free"
+              description="Lorem ipsum dolor sit amet conse"
+              price="0"
+              benefits={[
+                {
+                  emoji: "📋",
+                  title: "1 solo proyecto"
+                },
+                {
+                  emoji: "💬",
+                  title: "Mensajes ilimitados"
+                },
+                {
+                  emoji: "📧",
+                  title: "Notificaciones vía email"
+                },
+                {
+                  emoji: "🎯",
+                  title: "Dashboard para administrar tus mensajes"
+                },
+
+              ]}
+            />
+            <PricingCard
+              name="PRO"
+              description="Lorem ipsum dolor sit amet conse"
+              price="8"
+              benefits={[
+                {
+                  emoji: "📋",
+                  title: "Proyectos ilimitados"
+                },
+                {
+                  emoji: "💬",
+                  title: "Mensajes ilimitados"
+                },
+                {
+                  emoji: "📧",
+                  title: "Notificaciones vía email"
+                },
+                {
+                  emoji: "🎨",
+                  title: "Personalización de formularios"
+                },
+                {
+                  emoji: "🎯",
+                  title: "Dashboard para administrar tus mensajes"
+                }
+              ]}
+            />
+          </div>
+
+        }
+
       </section>
       <section class='text-center py-28'>
         <h2 class="color-red text-4xl md:text-5xl mb-6 dark:text-[#e5e7eb] text-[#0F1017]"> Haz llegado hasta aquí, así que estas muy interesad@ o tienes <span class='font-bold'> algunas preguntas</span></h2>
-        <p class=" text-xl md:text-2xl font-light   text-[#4B5563] dark:text-[#7D7D84]">Cualquiera que sea el caso, te compartimos las preguntas más frecuentes para que termines de convencerte.</p>
+        <p class=" text-xl md:text-2xl font-light   text-[#7D7D84] dark:text-[#7D7D84]">Cualquiera que sea el caso, te compartimos las preguntas más frecuentes para que termines de convencerte.</p>
         <div class="my-20 flex flex-col gap-6">
           <Question
             question="¿Cuál es el precio de un estudio?"
@@ -147,6 +237,34 @@ export default component$(() => {
   );
 });
 
+
+const PricingCard = ({ name, description, benefits, price }) => {
+  return (
+    <div class="border-solid border-[1px] rounded-xl border-[#E1E0E0] dark:border-[#2E2E2E] w-[360px] py-[32px] px-6 text-left">
+      <h3 class='text-2xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>{name}</h3>
+      <p class='text-[#4B5563] dark:text-[#7D7D84] mb-4 font-light'>{description}</p>
+      <p> <span class='text-4xl font-bold dark:text-[#e5e7eb] text-[#0F1017]'>$ {price} </span><span class='text-lg '> USD / mes</span></p>
+      <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
+      <div class="min-h-[240px]">
+        {
+          benefits.map(({ emoji, title }) => {
+            return (
+              <div class='flex items-center gap-2 mb-4'>
+                <span class='text-2xl'>
+                  {emoji}
+                </span>
+                <h4 class="text-[#4B5563] font-light dark:text-[#7D7D84]">{title}</h4>
+              </div>
+            )
+          })
+        }
+      </div>
+
+      <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
+      <button class='btn w-full'>¡Empezar!</button>
+    </div>
+  )
+}
 
 const Question = ({ question, response }) => {
   return (
