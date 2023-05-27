@@ -30,8 +30,8 @@ const Nav = ({
     <nav class="bg-white flex justify-between px-12 py-4 items-center h-20 rounded-full shadow-md my-4 fixed w-full top-0">
       <h2 class="font-bold uppercase">Forms</h2>
       <div class="flex items-center gap-4">
-        <button class="hover:font-bold">Login</button>
-        <label for="theme">{theme}</label>
+        <button class="hover:font-bold font-medium">Login</button>
+        <label for="theme text-xs">{theme}</label>
         <input
           onChange$={onChangeTheme}
           id="theme"
