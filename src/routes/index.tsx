@@ -7,7 +7,8 @@ export default component$(() => {
       <h1 class="text-5xl font-bold">
         <span class="text-3xl">¡Solo copia, pega y listo!.</span>
         <br />
-        Tu propio formulario de contacto sin configuración.
+        Tu propio formulario de contacto sin configuración. <br />
+        HTML y nada más.
       </h1>
     </main>
   );
