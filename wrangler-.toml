@@ -1,0 +1,5 @@
+name="form-saas"
+compatibility_date = "2023-05-28"
+
+# Add polyfills for node builtin modules and globals
+node_compat = true
