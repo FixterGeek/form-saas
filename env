@@ -1,0 +1,4 @@
+GOOGLE_CLIENT_ID=812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com
+GOOGLE_SECRET=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
+ENV="development"
+PLANET_SCALE_URL=DATABASE_URL='mysql://pg8tnkuyrcjl454045ow:pscale_pw_Qdfekfk8sahpfaKJnpUaEZquPZgLVhT1lTLaBu5ibLO@aws.connect.psdb.cloud/fixtergeek?ssl={"rejectUnauthorized":true}'
