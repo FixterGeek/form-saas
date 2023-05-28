@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "build": "qwik build",
+    "build:prisma": "npx prisma generate --data-proxy && cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build -c adapters/cloudflare-pages/vite.config.ts",
@@ -20,8 +21,8 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "wrangler pages dev ./dist",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik",
-    "postinstall": "npx prisma generate --data-proxy && cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client"
+    "qwik": "qwik"
+
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.1.4",
