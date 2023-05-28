@@ -1,15 +1,16 @@
 generator client {
   provider = "prisma-client-js"
+  // output   = "node_modules/@prisma/client/.prisma/client"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("PRISMA_PROXY")
+  provider  = "mongodb"
+  url       = env("PRISMA_PROXY")
   directUrl = env("MONGO_ATLAS")
 }
 
 model Project {
-  id     String     @id @default(auto()) @map("_id") @db.ObjectId
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
   name   String?
   userId String
 }
@@ -17,9 +18,9 @@ model Project {
 model User {
   name          String?
   email         String  @unique
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
   access_token  String?
   picture       String?
   provider      String?
-  refresh_token String? 
+  refresh_token String?
 }

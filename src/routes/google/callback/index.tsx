@@ -42,7 +42,6 @@ const getToken = server$(
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
     });
-    console.log("RESPIO", resp);
     return await resp.json();
   }
 );
