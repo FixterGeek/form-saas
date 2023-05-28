@@ -1,0 +1,27 @@
+.activeLight {
+    background-color: white;
+    color: #121826;
+    height: 48px;
+    border-radius: 24px;
+    width: 116px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+
+}
+
+.inactiveTab {
+    height: 48px;
+    border-radius: 24px;
+    width: 116px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #121826;
+    cursor: pointer;
+    z-index: 10;
+
+}
