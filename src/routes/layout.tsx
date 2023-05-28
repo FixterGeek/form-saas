@@ -103,7 +103,8 @@ const Nav = component$(
         new URLSearchParams({
           client_id:
             "812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com",
-          redirect_uri: "http://localhost:5173",
+          redirect_uri: "https://form-saas.pages.dev",
+          // redirect_uri: "http://localhost:5173",
           response_type: "code",
           scope: "https://www.googleapis.com/auth/userinfo.email",
           // access_type: "offline",
