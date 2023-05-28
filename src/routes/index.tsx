@@ -146,7 +146,7 @@ export default component$(() => {
               Mensual
             </a>
             <div class="absolute left-[52%] top-[-18px] flex">
-              <img class="  w-[120px]" src={arrow} />
+              <img width={100} height={100} class="  w-[120px]" src={arrow} />
               <p class="text-[#F2C94C] mt-[26px] ml-[-32px]">¡Ahorra 20%!</p>
             </div>
             <a

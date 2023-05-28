@@ -14,7 +14,6 @@ import type { UserType } from "~/db/zod";
 // import { component$ } from "@builder.io/qwik";
 import invariant from "tiny-invariant";
 import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import axios from "axios";
 
 type UserDataType = {
   email: string;
