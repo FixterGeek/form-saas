@@ -114,7 +114,7 @@ export const onGet: RequestHandler = async (requestEvent) => {
 
   const resp: Response = await fetch(url, {
     method: "post",
-    headers: { "Content-Type": "application/json" },
+    headers: { Accept: "application/json" },
   });
   // create user, set cookie and redirect to dash
   const body = await resp.json();
