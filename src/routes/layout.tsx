@@ -2,9 +2,12 @@ import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 import {
   routeAction$,
   type RequestEventAction,
+  RequestEventLoader,
+  routeLoader$,
   // routeLoader$,
   // type RequestEventLoader,
 } from "@builder.io/qwik-city";
+import { db } from "~/db/db";
 import { type UserType } from "~/db/zod";
 // import { PrismaClient } from "@prisma/client";
 
@@ -33,25 +36,25 @@ export const useGoogleOAuth2 = routeAction$(
   }
 );
 
-// export const useUser = routeLoader$(async (request: RequestEventLoader) => {
-//   const db = new PrismaClient();
-//   if (request.cookie.has("userId")) {
-//     const userId = request.cookie.get("userId");
-//     const user = (await db.user.findUnique({
-//       where: {
-//         id: Number(userId?.value ?? 0),
-//       },
-//     })) as UserType;
-//     if (!user) {
-//       request.cookie.delete("userId");
-//     }
-//     return user;
-//   }
-// });
+export const useUser = routeLoader$(async (request: RequestEventLoader) => {
+  if (request.cookie.has("userId")) {
+    const userId = request.cookie.get("userId");
+    if (!userId) return null;
+    const user = (await db
+      .selectFrom("User")
+      .selectAll()
+      .where("id", "=", Number(userId.value))
+      .executeTakeFirst()) as UserType;
+    if (!user) {
+      request.cookie.delete("userId");
+    }
+    return user;
+  }
+});
 
 export default component$(() => {
   const theme = useSignal<"dark" | "light">("dark");
-  // const user = useUser();
+  const user = useUser();
 
   const onChangeTheme = $((event: Event) => {
     theme.value = (event.target as HTMLInputElement).checked ? "dark" : "light";
@@ -60,7 +63,7 @@ export default component$(() => {
   return (
     <main class={`${theme.value}`}>
       <Nav
-        // user={user.value}
+        user={user.value}
         theme={theme.value}
         onChangeTheme={onChangeTheme}
       />

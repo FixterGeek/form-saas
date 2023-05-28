@@ -3,120 +3,104 @@ import {
   type RequestEvent,
   type RequestHandler,
 } from "@builder.io/qwik-city";
-// import { db } from "~/db/db";
+import { db } from "~/db/db";
+import invariant from "tiny-invariant";
+import type { UserType } from "~/db/zod";
+
+type UserDataType = {
+  email: string;
+  picture: string;
+};
 
 const googleTokensURL = "https://oauth2.googleapis.com/token?";
 
-// type UserDataType = {
-//   id: string;
-//   email: string;
-//   verified_email: boolean;
-//   picture: string;
-// };
-
-const getOrCreateUserFromGoogle = server$(async () => {
-  // { token_type, access_token, refresh_token }
-  // const options = {
-  //   headers: {
-  //     Accept: "application/json",
-  //     Authorization: `${token_type} ` + access_token,
-  //   },
-  //   method: "get",
-  // };
-  // const url = "https://www.googleapis.com/oauth2/v2/userinfo";
-  // const resp = await fetch(url, options);
-  // const data: UserDataType = await resp.json();
-  // const newUserData = {
-  //   name: undefined,
-  //   email: data.email,
-  //   picture: data.picture,
-  //   access_token,
-  //   refresh_token,
-  //   provider: "google",
-  // };
-  return null;
-
-  // return await db.user.upsert({
-  //   where: {
-  //     email: newUserData.email,
-  //   },
-  //   update: {
-  //     name: newUserData.name,
-  //     email: newUserData.email,
-  //     picture: newUserData.picture,
-  //     access_token: newUserData.access_token,
-  //     refresh_token: newUserData.refresh_token,
-  //     provider: newUserData.provider,
-  //   },
-  //   create: {
-  //     name: newUserData.name,
-  //     email: newUserData.email,
-  //     picture: newUserData.picture,
-  //     access_token: newUserData.access_token,
-  //     refresh_token: newUserData.refresh_token,
-  //     provider: newUserData.provider,
-  //   },
-  // });
-});
+const getOrCreateUserFromGoogle = server$(
+  async ({ token_type, access_token, refresh_token }) => {
+    const options = {
+      headers: {
+        Accept: "application/json",
+        Authorization: `${token_type} ` + access_token,
+      },
+      method: "get",
+    };
+    const url = "https://www.googleapis.com/oauth2/v2/userinfo";
+    const resp = await fetch(url, options);
+    const data: UserDataType = await resp.json();
+    const newUserData: UserType = {
+      name: null,
+      email: data.email,
+      picture: data.picture,
+      access_token,
+      refresh_token,
+      provider: "google",
+    };
+    let user;
+    // check if exists
+    const exists = await db
+      .selectFrom("User")
+      .selectAll()
+      .where("email", "=", newUserData.email)
+      .executeTakeFirst();
+    if (exists) {
+      // update
+      await db
+        .updateTable("User")
+        .set(newUserData)
+        .where("id", "=", exists.id)
+        // .returningAll()
+        .executeTakeFirst();
+      user = await db
+        .selectFrom("User")
+        .selectAll()
+        .where("email", "=", newUserData.email)
+        .executeTakeFirst();
+    } else {
+      const result = await db
+        .insertInto("User")
+        .values(newUserData)
+        .executeTakeFirst();
+      user = await db
+        .selectFrom("User")
+        .selectAll()
+        .where("id", "=", Number(result.insertId))
+        .executeTakeFirst();
+    }
+    return user;
+  }
+);
 
 const createSessionAndRedirect = server$(
   async ({
-    // access_token,
+    access_token,
     request,
     redirectURL = "/",
-  }: // token_type,
-  // refresh_token,
-  {
+    token_type,
+    refresh_token,
+  }: {
     refresh_token: string;
     token_type: string;
     access_token: string;
     request: RequestEvent<QwikCityPlatform>;
     redirectURL: string;
   }) => {
-    const user = await getOrCreateUserFromGoogle();
-    //   {
-    //   access_token,
-    //   token_type,
-    //   refresh_token,
-    // });
+    const user = (await getOrCreateUserFromGoogle({
+      access_token,
+      token_type,
+      refresh_token,
+    })) as UserType;
     if (!user) {
       throw request.redirect(303, "/");
     }
     // // set cookie
-    // await request.cookie.set("userId", user.id, {
-    //   path: "/",
-    //   httpOnly: true,
-    //   sameSite: "strict",
-    // });
-
+    invariant(user.id);
+    await request.cookie.set("userId", user.id, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+    });
     throw request.redirect(303, redirectURL);
-    // request.json(200, user);
   }
 );
-
-// const upsertUser = server$(async (newUserData: UserType) => {
-//   const db = new PrismaClient();
-//   return await db.user.upsert({
-//     where: {
-//       id: newUserData.id,
-//       email: newUserData.email,
-//     },
-//     update: {
-//       name: newUserData.name,
-//       email: newUserData.email,
-//       picture: newUserData.picture,
-//       access_token: newUserData.access_token,
-//       refresh_token: newUserData.refresh_token,
-//     },
-//     create: {
-//       name: newUserData.name,
-//       email: newUserData.email,
-//       picture: newUserData.picture,
-//       access_token: newUserData.access_token,
-//       refresh_token: newUserData.refresh_token,
-//     },
-//   });
-// });
 
 export const onGet: RequestHandler = async (requestEvent) => {
   const searchParams = new URL(requestEvent.url).searchParams;

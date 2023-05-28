@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator kysely {
+  provider = "npx prisma-generator-kysely"
+  output   = "../src/types"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id     Int     @id @default(autoincrement())
+  name   String?
+  userId Int
+}
+
+model Suscriber {
+  name  String?
+  email String
+  id    Int     @id @default(autoincrement())
+}
+
+model User {
+  name          String?
+  email         String  @unique
+  id            Int     @id @default(autoincrement())
+  access_token  String? @db.Text
+  picture       String?
+  provider      String?
+  refresh_token String? @db.Text
+}
