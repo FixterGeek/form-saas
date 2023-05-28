@@ -1,10 +1,4 @@
-import {
-  $,
-  component$,
-  Slot,
-  useSignal,
-  useVisibleTask$,
-} from "@builder.io/qwik";
+import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 import {
   routeAction$,
   type RequestEventAction,
@@ -20,7 +14,7 @@ import { type UserType } from "~/db/zod";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 
-export const useGoogleOAuth2 = routeAction$(
+export const useGoogleCode = routeAction$(
   async (_, requestEvent: RequestEventAction<QwikCityPlatform>) => {
     // check for logged user
     if (requestEvent.cookie.has("userId")) {
@@ -33,8 +27,8 @@ export const useGoogleOAuth2 = routeAction$(
         client_id: requestEvent.env.get("GOOGLE_CLIENT_ID") as string,
         redirect_uri:
           requestEvent.env.get("ENV") === "development"
-            ? "http://localhost:5173"
-            : "https://form-saas.pages.dev",
+            ? "http://localhost:5173/google/callback"
+            : "https://form-saas.pages.dev/google/callback",
         response_type: "code",
         scope: "https://www.googleapis.com/auth/userinfo.email",
         access_type: "offline",
@@ -44,7 +38,6 @@ export const useGoogleOAuth2 = routeAction$(
 );
 
 export const useUser = routeLoader$(async (request: RequestEventLoader) => {
-  console.log("Redirecciono de vuelta");
   if (request.cookie.has("userId")) {
     const userId = request.cookie.get("userId");
     if (!userId) return null;
@@ -54,7 +47,7 @@ export const useUser = routeLoader$(async (request: RequestEventLoader) => {
       .where("id", "=", Number(userId.value))
       .executeTakeFirst()) as UserType;
     if (!user) {
-      request.cookie.delete("userId");
+      // request.cookie.delete("userId");
     }
     return user;
   }
@@ -95,39 +88,40 @@ const Nav = component$(
     onChangeTheme: any;
     theme: "dark" | "light";
   }) => {
-    const action = useGoogleOAuth2();
+    const action = useGoogleCode();
 
-    const getToken = $(() => {
-      const url =
-        googleURL +
-        new URLSearchParams({
-          client_id:
-            "812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com",
-          redirect_uri: "https://form-saas.pages.dev",
-          // redirect_uri: "http://localhost:5173",
-          response_type: "code",
-          scope: "https://www.googleapis.com/auth/userinfo.email",
-          // access_type: "offline",
-        });
-      location.href = url;
-    });
+    // const getToken = $(() => {
+    //   const url =
+    //     googleURL +
+    //     new URLSearchParams({
+    //       client_id:
+    //         "812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com",
+    //       // redirect_uri: `https://form-saas.pages.dev`,
+    //       redirect_uri: "http://localhost:5173",
+    //       response_type: "code",
+    //       scope: "https://www.googleapis.com/auth/userinfo.email",
+    //       // access_type: "offline",
+    //     });
+    //   location.href = url;
+    // });
 
-    useVisibleTask$(() => {
-      try {
-        const href = new URL(location.href);
-        const code = href.searchParams.get("code");
-        if (!code) return;
-        const url =
-          "/google/callback?" +
-          new URLSearchParams({
-            code,
-          });
-        location.href = url;
-      } catch (err) {
-        console.error(err);
-        // @TODO: Toast
-      }
-    });
+    // useVisibleTask$(() => {
+    //   try {
+    //     const href = new URL(location.href);
+    //     console.log("Location: ", location);
+    //     const code = href.searchParams.get("code");
+    //     if (!code) return;
+    //     const url =
+    //       "/google/callback?" +
+    //       new URLSearchParams({
+    //         code,
+    //       });
+    //     location.href = url;
+    //   } catch (err) {
+    //     console.error(err);
+    //     // @TODO: Toast
+    //   }
+    // });
 
     return (
       <nav class="bg-white dark:bg-[#0F1017] flex justify-between px-12 py-4 items-center h-20  fixed w-full top-0 z-20">
@@ -135,16 +129,10 @@ const Nav = component$(
         <div class="flex items-center gap-4">
           {/* Need to redirecto to dash */}
           <button
-            onClick$={async () => {
-              getToken();
-            }}
             // onClick$={async () => {
-            //   if (user) {
-            //     console.log("redirect @TODO");
-            //   } else {
-            //     await action.submit({ perro: "blissmo" });
-            //   }
+            // getToken();
             // }}
+            onClick$={() => action.submit()}
             class="font-bold"
           >
             {action.isRunning ? (

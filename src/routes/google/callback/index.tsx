@@ -1,11 +1,19 @@
 import {
   server$,
-  type RequestEvent,
+  // type RequestEvent,
+  // type RequestHandler,
+  // routeLoader$,
+  type RequestEventLoader,
   type RequestHandler,
+  type RequestEvent,
+  useNavigate,
 } from "@builder.io/qwik-city";
 import { db } from "~/db/db";
-import invariant from "tiny-invariant";
+// import invariant from "tiny-invariant";
 import type { UserType } from "~/db/zod";
+// import { component$ } from "@builder.io/qwik";
+import invariant from "tiny-invariant";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
 
 type UserDataType = {
   email: string;
@@ -15,7 +23,12 @@ type UserDataType = {
 const googleTokensURL = "https://oauth2.googleapis.com/token?";
 
 const getToken = server$(
-  async (code: string, request: RequestEvent<QwikCityPlatform>) => {
+  async (
+    code: string,
+    request:
+      | RequestEventLoader<QwikCityPlatform>
+      | RequestEvent<QwikCityPlatform>
+  ) => {
     const url =
       googleTokensURL +
       new URLSearchParams({
@@ -24,8 +37,8 @@ const getToken = server$(
         client_secret: request.env.get("GOOGLE_SECRET") as string,
         redirect_uri:
           request.env.get("ENV") === "development"
-            ? "http://localhost:5173"
-            : "https://form-saas.pages.dev",
+            ? "http://localhost:5173/google/callback"
+            : "https://form-saas.pages.dev/google/callback",
         grant_type: "authorization_code",
       });
 
@@ -116,18 +129,40 @@ const getOrCreateUserFromGoogle = server$(
 //   }
 // );
 
-export const onGet: RequestHandler = async (requestEvent) => {
-  const url = new URL(requestEvent.url);
+// export const onGet: RequestHandler = async (requestEvent) => {
+
+//   // requestEvent.headers.set("Set-Cookie", `userId=${user.id}`);
+//   // throw requestEvent.redirect(302, "/dash");
+// };
+
+export const onGet: RequestHandler = async (request) => {
+  const url = new URL(request.url);
   const code = url.searchParams.get("code");
   if (!code) return;
-  const { access_token, token_type } = await getToken(code, requestEvent);
-  if (!access_token) throw requestEvent.redirect(303, "/");
+  const { access_token, token_type } = await getToken(code, request);
+  // if (!access_token) throw request.redirect(303, "/");
   const user = await getOrCreateUserFromGoogle({ access_token, token_type });
   invariant(user && user.id);
-  // requestEvent.cookie.set("userId", String(user.id));
-  requestEvent.headers.set("Set-Cookie", `userId=${user.id}`);
-  throw requestEvent.redirect(302, "/dash");
+  request.cookie.set("userId", String(user.id), {
+    maxAge: [30, "days"],
+    path: "/",
+    httpOnly: true,
+    sameSite: "strict",
+  });
+  // throw request.redirect(302, "/dash");
+  // throw request.redirect(302, "/dash");
+  // console.log("Loader");
+  // return;
+  // @TODO: signout
 };
+
+export default component$(() => {
+  const nav = useNavigate();
+  useVisibleTask$(() => {
+    nav("/dash");
+  });
+  return null;
+});
 // const url =
 //   googleTokensURL +
 //   new URLSearchParams({

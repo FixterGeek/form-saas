@@ -340,7 +340,7 @@ const PricingCard = ({
       <div class="min-h-[240px]">
         {benefits.map(({ emoji, title }: { emoji: any; title: any }) => {
           return (
-            <div class="flex items-center gap-2 mb-4">
+            <div key={title} class="flex items-center gap-2 mb-4">
               <span class="text-2xl">{emoji}</span>
               <h4 class="text-[#4B5563] font-light dark:text-[#7D7D84]">
                 {title}
