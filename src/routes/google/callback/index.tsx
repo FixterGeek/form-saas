@@ -153,14 +153,15 @@ const getNewUserData = server$(
   }
 );
 
-const createPrismaUser = server$(async (data: UserType): Promise<UserType> => {
-  const prisma = new PrismaClient();
-  return (await prisma.user.upsert({
-    where: { email: data.email },
-    create: data,
-    update: data,
-  })) as UserType;
-});
+const createPrismaUser = server$(
+  async (data: UserType, prisma: PrismaClient): Promise<UserType> => {
+    return (await prisma.user.upsert({
+      where: { email: data.email },
+      create: data,
+      update: data,
+    })) as UserType;
+  }
+);
 
 export const onGet: RequestHandler = async (request) => {
   const url = new URL(request.url);
@@ -169,7 +170,16 @@ export const onGet: RequestHandler = async (request) => {
   const { access_token, token_type } = await getToken(code, request);
 
   const data = await getNewUserData({ access_token, token_type });
-  const user = await createPrismaUser(data);
+  const user = await createPrismaUser(
+    data,
+    new PrismaClient({
+      datasources: {
+        db: {
+          url: request.env.get("DATABASE_URL"),
+        },
+      },
+    })
+  );
 
   request.cookie.set("userId", String(user.id), {
     maxAge: [30, "days"],
