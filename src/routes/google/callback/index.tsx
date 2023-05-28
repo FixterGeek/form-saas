@@ -44,9 +44,10 @@ const getToken = server$(
 
     const resp: Response = await fetch(url, {
       method: "post",
-      headers: { Accept: "application/json", Cache: "" },
-      cache: "default",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
     });
+    console.log("RESPIO", resp);
     return await resp.json();
   }
 );
