@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "@prisma/client": "^4.14.1",
-    "react-icons": "^4.8.0",
     "zod": "^3.21.4"
   }
 }
