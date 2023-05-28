@@ -43,22 +43,22 @@ const getToken = server$(
         grant_type: "authorization_code",
       });
 
-    // const resp: Response = await fetch(url, {
-    //   method: "post",
-    //   headers: { "Content-Type": "application/json" },
-    //   cache: "no-store",
-    // });
-    const resp = await axios.post(
-      url,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const resp: Response = await fetch(url, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-cache",
+    });
+    // const resp = await axios.post(
+    //   url,
+    //   {},
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
     console.log("RESPIO", resp);
-    return await resp.data;
+    return await resp.json();
   }
 );
 
