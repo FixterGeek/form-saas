@@ -2,7 +2,7 @@ import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 import {
   routeAction$,
   type RequestEventAction,
-  RequestEventLoader,
+  type RequestEventLoader,
   routeLoader$,
   // routeLoader$,
   // type RequestEventLoader,

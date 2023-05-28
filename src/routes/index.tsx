@@ -32,6 +32,8 @@ export default component$(() => {
         <div class="flex flex-wrap justify-center gap-20 mt-16">
           <div class="w-full lg:w-[500px] text-left">
             <img
+              width="100"
+              height="100"
               class="object-cover h-[360px] w-full rounded-md mb-6"
               src={form}
             />
@@ -45,6 +47,8 @@ export default component$(() => {
           </div>
           <div class="w-full lg:w-[500px] text-left">
             <img
+              width="100"
+              height="100"
               class="object-cover h-[360px] w-full rounded-md mb-6"
               src={form}
             />
