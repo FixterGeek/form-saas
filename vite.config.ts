@@ -10,7 +10,7 @@ export default defineConfig(() => {
         ".prisma/client/edge":"./node_modules/.prisma/client/edge.js"
       }
     },
-        plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+      plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
         preview: {
           headers: {
             'Cache-Control': 'public, max-age=600',
