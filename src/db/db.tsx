@@ -13,3 +13,17 @@
 //     format: SqlString.format,
 //   }),
 // });
+
+import { PrismaClient } from "@prisma/client/edge";
+
+export const getDB = (
+  env: QwikCityPlatform["env"] & { get: (arg0: string) => string | undefined }
+) => {
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: env.get("DATABASE_URL"),
+      },
+    },
+  });
+};

@@ -1,5 +1,11 @@
 import { $, component$, Slot, useSignal } from "@builder.io/qwik";
-import { routeAction$, type RequestEventAction } from "@builder.io/qwik-city";
+import {
+  routeAction$,
+  type RequestEventAction,
+  type RequestEventLoader,
+  routeLoader$,
+} from "@builder.io/qwik-city";
+import { getDB } from "~/db/db";
 import type { UserType } from "~/db/zod";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
@@ -27,25 +33,26 @@ export const useGoogleCode = routeAction$(
   }
 );
 
-// export const useUser = routeLoader$(async (request: RequestEventLoader) => {
-//   if (request.cookie.has("userId")) {
-//     const userId = request.cookie.get("userId");
-//     if (!userId) return null;
-//     const user = (await db
-//       .selectFrom("User")
-//       .selectAll()
-//       .where("id", "=", Number(userId.value))
-//       .executeTakeFirst()) as UserType;
-//     if (!user) {
-//       // request.cookie.delete("userId");
-//     }
-//     return user;
-//   }
-// });
+export const useUser = routeLoader$(async (request: RequestEventLoader) => {
+  if (request.cookie.has("userId")) {
+    const userId = request.cookie.get("userId");
+    if (!userId) return null;
+    const db = getDB(request.env);
+    const user = await db.user.findUnique({
+      where: {
+        id: userId.value,
+      },
+    });
+    if (!user) {
+      request.cookie.delete("userId"); // this is potentialy failing?
+    }
+    return user as UserType;
+  }
+});
 
 export default component$(() => {
   const theme = useSignal<"dark" | "light">("dark");
-  // const user = useUser();
+  const user = useUser();
 
   const onChangeTheme = $((event: Event) => {
     theme.value = (event.target as HTMLInputElement).checked ? "dark" : "light";
@@ -54,7 +61,7 @@ export default component$(() => {
   return (
     <main class={`${theme.value}`}>
       <Nav
-        // user={user.value}
+        user={user?.value}
         theme={theme.value}
         onChangeTheme={onChangeTheme}
       />
@@ -74,7 +81,7 @@ const Nav = component$(
     theme,
     onChangeTheme,
   }: {
-    user?: UserType | null | undefined;
+    user?: UserType | null;
     onChangeTheme: any;
     theme: "dark" | "light";
   }) => {
