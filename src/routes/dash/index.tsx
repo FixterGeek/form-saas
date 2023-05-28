@@ -1,17 +1,28 @@
 import { component$ } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
+import { db } from "~/db/db";
+import type { UserType } from "~/db/zod";
 
-export const onGet: RequestHandler = async (request) => {
+export const useUser = routeLoader$(async (request) => {
   const userId = request.cookie.get("userId");
-  if (!userId) {
+  if (!userId || isNaN(Number(userId.value))) {
     throw request.redirect(302, "/");
+    console.log("No cookie");
   }
-};
+  return (await db
+    .selectFrom("User")
+    .selectAll()
+    .where("id", "=", Number(userId.value))
+    .executeTakeFirst()) as UserType;
+});
 
 export default component$(() => {
+  const user = useUser();
+
   return (
     <main class="py-20 mx-auto max-w-3xl">
-      <h2 class="text-5xl font-bold">Dashboard</h2>
+      <h2 class="text-5xl font-bold">Tus proyectos</h2>
+      <p class="py-2">{user.value.email}</p>
     </main>
   );
 });

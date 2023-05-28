@@ -34,7 +34,7 @@ const getOrCreateUserFromGoogle = server$(
       refresh_token,
       provider: "google",
     };
-    let user;
+
     // check if exists
     const exists = await db
       .selectFrom("User")
@@ -49,31 +49,23 @@ const getOrCreateUserFromGoogle = server$(
         .where("id", "=", exists.id)
         // .returningAll()
         .executeTakeFirst();
-      user = await db
-        .selectFrom("User")
-        .selectAll()
-        .where("email", "=", newUserData.email)
-        .executeTakeFirst();
     } else {
-      const result = await db
-        .insertInto("User")
-        .values(newUserData)
-        .executeTakeFirst();
-      user = await db
-        .selectFrom("User")
-        .selectAll()
-        .where("id", "=", Number(result.insertId))
-        .executeTakeFirst();
+      // insert
+      await db.insertInto("User").values(newUserData).executeTakeFirst();
     }
-    return user;
+    return await db
+      .selectFrom("User")
+      .selectAll()
+      .where("email", "=", newUserData.email)
+      .executeTakeFirst();
   }
 );
 
-const createSessionAndRedirect = server$(
+const createSession = server$(
   async ({
     access_token,
     request,
-    redirectURL = "/",
+    // redirectURL = "/",
     token_type,
     refresh_token,
   }: {
@@ -81,7 +73,7 @@ const createSessionAndRedirect = server$(
     token_type: string;
     access_token: string;
     request: RequestEvent<QwikCityPlatform>;
-    redirectURL: string;
+    redirectURL?: string;
   }) => {
     const user = (await getOrCreateUserFromGoogle({
       access_token,
@@ -98,7 +90,8 @@ const createSessionAndRedirect = server$(
       httpOnly: true,
       sameSite: "strict",
     });
-    throw request.redirect(303, redirectURL);
+    // await new Promise((r) => setTimeout(() => r(null), 5000));
+    return;
   }
 );
 
@@ -126,13 +119,14 @@ export const onGet: RequestHandler = async (requestEvent) => {
   // create user, set cookie and redirect to dash
   const body = await resp.json();
 
-  return createSessionAndRedirect({
+  await createSession({
     request: requestEvent,
     access_token: body.access_token,
     refresh_token: body.refresh_token,
     token_type: body.token_type,
     redirectURL: "/dash",
   });
+  throw requestEvent.redirect(302, "/dash");
   // requestEvent.json(200, {
   //   status: resp.status,
   //   statusText: resp.statusText,
