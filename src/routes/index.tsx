@@ -349,7 +349,10 @@ const PricingCard = ({
 
 const Question = ({ question, response }: { question: any; response: any }) => {
   return (
-    <div class="collapse collapse-plus border border-[#E1E0E0] dark:border-[#2E2E2E] rounded-box text-left">
+    <div
+      tabIndex={0}
+      class="collapse collapse-plus border border-[#E1E0E0] dark:border-[#2E2E2E] rounded-box text-left"
+    >
       <div class="collapse-title text-xl font-medium text-[#0F1017] dark:text-[#e5e7eb]">
         {question}
       </div>
