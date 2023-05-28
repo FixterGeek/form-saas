@@ -40,7 +40,6 @@ const getToken = server$(
     const resp: Response = await fetch(url, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      cache: "no-cache",
     });
     return await resp.json();
   }
