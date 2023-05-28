@@ -5,7 +5,8 @@ import {
   routeLoader$,
   type RequestEventLoader,
 } from "@builder.io/qwik-city";
-import db, { type UserType } from "~/db/db";
+import db from "../db/db";
+import { type UserType } from "~/db/zod";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 

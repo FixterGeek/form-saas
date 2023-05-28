@@ -1,5 +1,6 @@
 import type { RequestEvent, RequestHandler } from "@builder.io/qwik-city";
-import db, { type UserType } from "~/db/db";
+import db from "~/db/db";
+import { type UserType } from "~/db/zod";
 
 const googleTokensURL = "https://oauth2.googleapis.com/token?";
 
