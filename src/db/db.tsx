@@ -1,5 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
+import { default as Prisma } from "@prisma/client";
+
+const { PrismaClient } = Prisma;
+
+export const prisma = new PrismaClient();
 
 export default new PrismaClient();
 

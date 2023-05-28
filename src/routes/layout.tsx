@@ -3,6 +3,7 @@ import {
   routeAction$,
   type RequestEventAction,
   routeLoader$,
+  type RequestEventLoader,
 } from "@builder.io/qwik-city";
 import db, { type UserType } from "~/db/db";
 
@@ -31,14 +32,18 @@ export const useGoogleOAuth2 = routeAction$(
   }
 );
 
-export const useUser = routeLoader$(async (request) => {
+export const useUser = routeLoader$(async (request: RequestEventLoader) => {
   if (request.cookie.has("userId")) {
     const userId = request.cookie.get("userId");
-    const user = await db.user.findUnique({
+    console.log("Camon !", userId);
+    const user = (await db.user.findUnique({
       where: {
-        id: Number(userId.value) || 0,
+        id: Number(userId?.value ?? 0),
       },
-    });
+    })) as UserType;
+    if (!user) {
+      request.cookie.delete("userId");
+    }
     return user;
   }
 });
@@ -70,7 +75,7 @@ const Nav = component$(
     theme,
     onChangeTheme,
   }: {
-    user?: UserType;
+    user?: UserType | null | undefined;
     onChangeTheme: any;
     theme: "dark" | "light";
   }) => {

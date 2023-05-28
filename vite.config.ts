@@ -11,5 +11,20 @@ export default defineConfig(() => {
         'Cache-Control': 'public, max-age=600',
       },
     },
+    build:{
+      rollupOptions:{
+        external: [
+          /^.prisma/,
+        ]
+      }
+    }
+    // build:{
+    //   extraResources:[
+    //     {
+    //       from:"node_modules/.prisma/client/",
+    //       to:"app/node_modules/.prisma/client/"
+    //     }
+    //   ]
+    // }
   };
 });
