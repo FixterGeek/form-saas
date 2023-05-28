@@ -5,8 +5,8 @@ import {
   routeLoader$,
   type RequestEventLoader,
 } from "@builder.io/qwik-city";
-import db from "../db/db";
 import { type UserType } from "~/db/zod";
+import { PrismaClient } from "@prisma/client";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 
@@ -34,9 +34,9 @@ export const useGoogleOAuth2 = routeAction$(
 );
 
 export const useUser = routeLoader$(async (request: RequestEventLoader) => {
+  const db = new PrismaClient();
   if (request.cookie.has("userId")) {
     const userId = request.cookie.get("userId");
-    console.log("Camon !", userId);
     const user = (await db.user.findUnique({
       where: {
         id: Number(userId?.value ?? 0),
@@ -51,7 +51,7 @@ export const useUser = routeLoader$(async (request: RequestEventLoader) => {
 
 export default component$(() => {
   const theme = useSignal<"dark" | "light">("dark");
-  const { value: user } = useUser();
+  const user = useUser();
 
   const onChangeTheme = $((event: Event) => {
     theme.value = (event.target as HTMLInputElement).checked ? "dark" : "light";
@@ -59,7 +59,11 @@ export default component$(() => {
 
   return (
     <main class={`${theme.value}`}>
-      <Nav user={user} theme={theme.value} onChangeTheme={onChangeTheme} />
+      <Nav
+        user={user.value}
+        theme={theme.value}
+        onChangeTheme={onChangeTheme}
+      />
       <section>
         <section class="bg-[white] dark:bg-[#0F1017] dark:text-slate-400 py-20 min-h-screen text-[#121826]">
           <Slot />
