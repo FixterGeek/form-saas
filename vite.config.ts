@@ -20,11 +20,11 @@ export default defineConfig(() => {
     //   }
     // }
    
-    build:{
-     rollupOptions:{
-      external:['prisma','@prisma/client']
-     }
-    }
+    // build:{
+    //  rollupOptions:{
+    //   external:['prisma','@prisma/client']
+    //  }
+    // }
 
     // build:{
     //   extraResources:[
