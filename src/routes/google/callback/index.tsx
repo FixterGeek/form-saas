@@ -14,6 +14,7 @@ import type { UserType } from "~/db/zod";
 // import { component$ } from "@builder.io/qwik";
 import invariant from "tiny-invariant";
 import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import axios from "axios";
 
 type UserDataType = {
   email: string;
@@ -42,13 +43,22 @@ const getToken = server$(
         grant_type: "authorization_code",
       });
 
-    const resp: Response = await fetch(url, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-    });
+    // const resp: Response = await fetch(url, {
+    //   method: "post",
+    //   headers: { "Content-Type": "application/json" },
+    //   cache: "no-store",
+    // });
+    const resp = await axios.post(
+      url,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     console.log("RESPIO", resp);
-    return await resp.json();
+    return await resp.data;
   }
 );
 
