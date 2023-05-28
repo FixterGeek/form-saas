@@ -7,7 +7,13 @@ export const useUser = routeLoader$(async (request) => {
   if (!userId?.value) {
     throw request.redirect(302, "/");
   }
-  const db = new PrismaClient();
+  const db = new PrismaClient({
+    datasources: {
+      db: {
+        url: request.env.get("DATABASE_URL"),
+      },
+    },
+  });
   return await db.user.findUnique({ where: { id: userId.value } });
 });
 
