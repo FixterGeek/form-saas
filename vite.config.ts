@@ -2,15 +2,12 @@ import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { qwikCity } from '@builder.io/qwik-city/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-// import { resolve } from 'path';
+import alias from "esbuild-plugin-alias"
+import NodeModule from "module"
+const { createRequire } = NodeModule
+const require = createRequire(import.meta.url)
 
 
-const includePathOptions = {
-  include: {},
-  paths: ['node_modules/.prisma/client/edge'],
-  external: [],
-  extensions: ['.js','.jsx', '.tsx', '.ts']
-};
 
 export default defineConfig(() => {
   return {
@@ -19,7 +16,11 @@ export default defineConfig(() => {
     //   // target:"webworker"
    
     // },
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), 
+    alias({
+      "@prisma/client":require.resolve('@prisma/client')
+    })
+    ],
     preview: {
       headers: {
         'Cache-Control': 'public, max-age=600',

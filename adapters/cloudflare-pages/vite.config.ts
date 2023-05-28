@@ -9,9 +9,6 @@ export default extendConfig(baseConfig, () => {
       rollupOptions: {
         input: ['src/entry.cloudflare-pages.tsx', '@qwik-city-plan'],
 
-            // external: [
-            //   /^.prisma\/client\/edge/,
-            // ]
 
       },
     },
