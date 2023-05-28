@@ -1,9 +1,17 @@
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useTask$,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import {
   routeAction$,
   type RequestEventAction,
   type RequestEventLoader,
   routeLoader$,
+  useLocation,
   // routeLoader$,
   // type RequestEventLoader,
 } from "@builder.io/qwik-city";
@@ -26,8 +34,8 @@ export const useGoogleOAuth2 = routeAction$(
         client_id: requestEvent.env.get("GOOGLE_CLIENT_ID") as string,
         redirect_uri:
           requestEvent.env.get("ENV") === "development"
-            ? "http://localhost:5173/google/callback"
-            : "https://form-saas.pages.dev/google/callback",
+            ? "http://localhost:5173"
+            : "https://form-saas.pages.dev",
         response_type: "code",
         scope: "https://www.googleapis.com/auth/userinfo.email",
         access_type: "offline",
@@ -37,6 +45,7 @@ export const useGoogleOAuth2 = routeAction$(
 );
 
 export const useUser = routeLoader$(async (request: RequestEventLoader) => {
+  console.log("Redirecciono de vuelta");
   if (request.cookie.has("userId")) {
     const userId = request.cookie.get("userId");
     if (!userId) return null;
@@ -89,6 +98,37 @@ const Nav = component$(
   }) => {
     const action = useGoogleOAuth2();
 
+    const getToken = $(() => {
+      const url =
+        googleURL +
+        new URLSearchParams({
+          client_id:
+            "812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com",
+          redirect_uri: "http://localhost:5173",
+          response_type: "code",
+          scope: "https://www.googleapis.com/auth/userinfo.email",
+          // access_type: "offline",
+        });
+      location.href = url;
+    });
+
+    useVisibleTask$(() => {
+      try {
+        const href = new URL(location.href);
+        const code = href.searchParams.get("code");
+        if (!code) return;
+        const url =
+          "/google/callback?" +
+          new URLSearchParams({
+            code,
+          });
+        location.href = url;
+      } catch (err) {
+        console.error(err);
+        // @TODO: Toast
+      }
+    });
+
     return (
       <nav class="bg-white dark:bg-[#0F1017] flex justify-between px-12 py-4 items-center h-20  fixed w-full top-0 z-20">
         <h2 class="font-bold uppercase">Forms</h2>
@@ -96,12 +136,15 @@ const Nav = component$(
           {/* Need to redirecto to dash */}
           <button
             onClick$={async () => {
-              if (user) {
-                console.log("redirect @TODO");
-              } else {
-                await action.submit({ perro: "blissmo" });
-              }
+              getToken();
             }}
+            // onClick$={async () => {
+            //   if (user) {
+            //     console.log("redirect @TODO");
+            //   } else {
+            //     await action.submit({ perro: "blissmo" });
+            //   }
+            // }}
             class="font-bold"
           >
             {action.isRunning ? (

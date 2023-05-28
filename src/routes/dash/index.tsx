@@ -6,8 +6,8 @@ import type { UserType } from "~/db/zod";
 export const useUser = routeLoader$(async (request) => {
   const userId = request.cookie.get("userId");
   if (!userId || isNaN(Number(userId.value))) {
-    throw request.redirect(302, "/");
     console.log("No cookie");
+    throw request.redirect(302, "/");
   }
   return (await db
     .selectFrom("User")
