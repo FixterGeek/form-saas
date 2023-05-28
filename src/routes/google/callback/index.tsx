@@ -6,7 +6,6 @@ import {
 import { db } from "~/db/db";
 import invariant from "tiny-invariant";
 import type { UserType } from "~/db/zod";
-import type { QwikCityNodeRequestOptions } from "@builder.io/qwik-city/middleware/node";
 
 type UserDataType = {
   email: string;

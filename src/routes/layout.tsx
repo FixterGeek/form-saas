@@ -3,7 +3,6 @@ import {
   component$,
   Slot,
   useSignal,
-  useTask$,
   useVisibleTask$,
 } from "@builder.io/qwik";
 import {
@@ -11,7 +10,7 @@ import {
   type RequestEventAction,
   type RequestEventLoader,
   routeLoader$,
-  useLocation,
+
   // routeLoader$,
   // type RequestEventLoader,
 } from "@builder.io/qwik-city";

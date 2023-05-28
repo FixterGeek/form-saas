@@ -115,7 +115,12 @@ export default component$(() => {
             </div>
           </div>
           <div class="w-full lg:w-[600px] text-left ">
-            <img class="object-cover w-full h-[440px] rounded-md" src={form} />
+            <img
+              width={100}
+              height={100}
+              class="object-cover w-full h-[440px] rounded-md"
+              src={form}
+            />
           </div>
         </div>
       </section>
