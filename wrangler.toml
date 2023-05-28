@@ -1,7 +1,0 @@
-name="form-saas"
-compatibility_date = "2023-05-28"
-[vars]
-MONGO_ATLAS="mongodb+srv://bliss:dUfO38sccEnpWl1P@cluster0.ivspr.mongodb.net/blissmo?retryWrites=true&w=majority"
-PRISMA_PROXY="prisma://aws-us-east-1.prisma-data.com/?"
-GOOGLE_CLIENT_ID="812155534287-8raq8ht65mv32egc3jhlb2pgngm07frv.apps.googleusercontent.com"
-GOOGLE_SECRET="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"
