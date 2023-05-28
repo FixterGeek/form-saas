@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate --data-proxy",
+    "postinstall": "prisma generate && prisma generate --data-proxy",
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
