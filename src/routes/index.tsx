@@ -9,14 +9,23 @@ export default component$(() => {
   const activeTab = useSignal(1);
 
   return (
-    <main class="max-w-6xl mx-auto py-20 px-4">
-      <section class="h-[80vh]">
-        <h1 class="text-5xl font-bold">
+    <main class="lg:max-w-6xl max-w-3xl mx-auto py-20 px-4">
+      <section class="mb-4 flex md:flex-row flex-col-reverse gap-8">
+        <h1 class="lg:text-6xl text-4xl font-bold flex-1">
           <span class="text-3xl">¡Solo copia, pega y listo!.</span>
           <br />
           Tu propio formulario de contacto sin configuración. <br />
           HTML y nada más.
         </h1>
+        <div class="flex-1 aspect-video rounded-2xl overflow-hidden ">
+          <video
+            loop
+            class="w-full h-full object-cover object-top"
+            src="/assets/form.mp4"
+            muted
+            autoPlay
+          ></video>
+        </div>
       </section>
       <section class="text-center py-28">
         <h2 class="dark:text-[#E7E8EC] text-[#0F1017] text-4xl md:text-5xl mb-6">
@@ -34,7 +43,7 @@ export default component$(() => {
             <img
               width="100"
               height="100"
-              class="object-cover h-[360px] w-full rounded-md mb-6"
+              class="object-cover w-full aspect-video rounded-md mb-6 "
               src={form}
             />
             <h3 class="text-xl font-bold dark:text-[#e5e7eb] text-[#0F1017]">
@@ -49,7 +58,7 @@ export default component$(() => {
             <img
               width="100"
               height="100"
-              class="object-cover h-[360px] w-full rounded-md mb-6"
+              class="object-cover w-full rounded-md mb-6 aspect-video"
               src={form}
             />
             <h3 class="text-xl font-bold dark:text-[#e5e7eb] text-[#0F1017]">
@@ -160,114 +169,58 @@ export default component$(() => {
           </div>
         </div>
 
-        {activeTab.value === 1 && (
-          <div class="flex flex-wrap gap-20 justify-center mt-8">
-            <PricingCard
-              name="Free"
-              description="Lorem ipsum dolor sit amet conse"
-              price="0"
-              benefits={[
-                {
-                  emoji: "📋",
-                  title: "1 solo proyecto",
-                },
-                {
-                  emoji: "💬",
-                  title: "Mensajes ilimitados",
-                },
-                {
-                  emoji: "📧",
-                  title: "Notificaciones vía email",
-                },
-                {
-                  emoji: "🎯",
-                  title: "Dashboard para administrar tus mensajes",
-                },
-              ]}
-            />
-            <PricingCard
-              name="PRO"
-              description="Lorem ipsum dolor sit amet conse"
-              price="10"
-              benefits={[
-                {
-                  emoji: "📋",
-                  title: "Proyectos ilimitados",
-                },
-                {
-                  emoji: "💬",
-                  title: "Mensajes ilimitados",
-                },
-                {
-                  emoji: "📧",
-                  title: "Notificaciones vía email",
-                },
-                {
-                  emoji: "🎨",
-                  title: "Personalización de formularios",
-                },
-                {
-                  emoji: "🎯",
-                  title: "Dashboard para administrar tus mensajes",
-                },
-              ]}
-            />
-          </div>
-        )}
-        {activeTab.value === 2 && (
-          <div class="flex flex-wrap gap-20 justify-center mt-8">
-            <PricingCard
-              name="Free"
-              description="Lorem ipsum dolor sit amet conse"
-              price="0"
-              benefits={[
-                {
-                  emoji: "📋",
-                  title: "1 solo proyecto",
-                },
-                {
-                  emoji: "💬",
-                  title: "Mensajes ilimitados",
-                },
-                {
-                  emoji: "📧",
-                  title: "Notificaciones vía email",
-                },
-                {
-                  emoji: "🎯",
-                  title: "Dashboard para administrar tus mensajes",
-                },
-              ]}
-            />
-            <PricingCard
-              name="PRO"
-              description="Lorem ipsum dolor sit amet conse"
-              price="8"
-              benefits={[
-                {
-                  emoji: "📋",
-                  title: "Proyectos ilimitados",
-                },
-                {
-                  emoji: "💬",
-                  title: "Mensajes ilimitados",
-                },
-                {
-                  emoji: "📧",
-                  title: "Notificaciones vía email",
-                },
-                {
-                  emoji: "🎨",
-                  title: "Personalización de formularios",
-                },
-                {
-                  emoji: "🎯",
-                  title: "Dashboard para administrar tus mensajes",
-                },
-              ]}
-            />
-          </div>
-        )}
+        <div class="flex flex-wrap gap-12 mt-8 justify-center">
+          <PricingCard
+            name="Free"
+            description="Lorem ipsum dolor sit amet conse"
+            price="0"
+            benefits={[
+              {
+                emoji: "📋",
+                title: "2 proyectos",
+              },
+              {
+                emoji: "💬",
+                title: "Mensajes ilimitados",
+              },
+              {
+                emoji: "📧",
+                title: "Notificaciones vía email",
+              },
+              {
+                emoji: "🎯",
+                title: "Dashboard para administrar tus mensajes",
+              },
+            ]}
+          />
+          <PricingCard
+            name="PRO"
+            description="Lorem ipsum dolor sit amet conse"
+            price={activeTab.value === 1 ? 10 : 8}
+            benefits={[
+              {
+                emoji: "📋",
+                title: "Proyectos ilimitados",
+              },
+              {
+                emoji: "💬",
+                title: "Mensajes ilimitados",
+              },
+              {
+                emoji: "📧",
+                title: "Notificaciones vía email",
+              },
+              {
+                emoji: "🎨",
+                title: "Personalización de formularios",
+              },
+              {
+                emoji: "🎯",
+                title: "Dashboard para administrar tus mensajes",
+              },
+            ]}
+          />
+        </div>
       </section>
       <section class="text-center py-28">
         <h2 class="color-red text-4xl md:text-5xl mb-6 dark:text-[#e5e7eb] text-[#0F1017]">
@@ -276,8 +229,8 @@ export default component$(() => {
           <span class="font-bold"> algunas preguntas</span>
         </h2>
         <p class=" text-xl md:text-2xl font-light   text-[#7D7D84] dark:text-[#7D7D84]">
-          Cualquiera que sea el caso, te compartimos las preguntas más
-          frecuentes para que termines de convencerte.
+          Revisa algunas de las preguntas más frecuentes. <br />Y termina de
+          convencerte:
         </p>
         <div class="my-20 flex flex-col gap-6">
           <Question
@@ -322,7 +275,7 @@ const PricingCard = ({
   price: any;
 }) => {
   return (
-    <div class="border-solid border-[1px] rounded-xl border-[#E1E0E0] dark:border-[#2E2E2E] w-[360px] py-[32px] px-6 text-left">
+    <div class="border-solid border-[1px] rounded-xl border-[#E1E0E0] dark:border-[#2E2E2E] max-w-[360px] w-[280px] py-[32px] px-6 text-left grow">
       <h3 class="text-2xl font-bold dark:text-[#e5e7eb] text-[#0F1017]">
         {name}
       </h3>

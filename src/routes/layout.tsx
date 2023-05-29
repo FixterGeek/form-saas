@@ -88,34 +88,36 @@ const Nav = component$(
     const action = useGoogleCode();
     // const { value: user } = useUser();
     return (
-      <nav class="bg-white dark:bg-[#0F1017] flex justify-between px-12 py-4 items-center h-20  fixed w-full top-0 z-20">
-        <h2 class="font-bold uppercase">Forms</h2>
-        <div class="flex items-center gap-4">
-          {/* Need to redirecto to dash */}
-          <button
-            // onClick$={async () => {
-            // getToken();
-            // }}
-            onClick$={() => action.submit()}
-            class="font-bold"
-          >
-            {action.isRunning ? (
-              <progress class="progress w-12"></progress>
-            ) : user ? (
-              user.email
-            ) : (
-              "Login"
-            )}
-          </button>
-          <label for="theme text-xs">{theme}</label>
-          <input
-            onChange$={onChangeTheme}
-            id="theme"
-            type="checkbox"
-            class="toggle"
-            checked
-          />
-        </div>
+      <nav class="h-20 fixed top-0 z-20  bg-white/30 dark:bg-black/60 backdrop-blur w-full">
+        <section class="flex items-center justify-between py-4 px-4 max-w-3xl mx-auto lg:max-w-6xl ">
+          <h2 class="font-bold text-2xl">Formy</h2>
+          <div class="flex items-center gap-4">
+            {/* Need to redirecto to dash */}
+            <button
+              // onClick$={async () => {
+              // getToken();
+              // }}
+              onClick$={() => action.submit()}
+              class="font-bold"
+            >
+              {action.isRunning ? (
+                <progress class="progress w-12"></progress>
+              ) : user ? (
+                user.email
+              ) : (
+                "Login"
+              )}
+            </button>
+            <label for="theme text-xs">{theme}</label>
+            <input
+              onChange$={onChangeTheme}
+              id="theme"
+              type="checkbox"
+              class="toggle"
+              checked
+            />
+          </div>
+        </section>
       </nav>
     );
   }
