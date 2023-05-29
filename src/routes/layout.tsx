@@ -1,6 +1,6 @@
 import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 import {
-  routeAction$,
+  globalAction$,
   type RequestEventAction,
   type RequestEventLoader,
   routeLoader$,
@@ -11,7 +11,7 @@ import type { UserType } from "~/db/zod";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 
-export const useGoogleCode = routeAction$(
+export const useGoogleCode = globalAction$(
   async (_, requestEvent: RequestEventAction<QwikCityPlatform>) => {
     // check for logged user
     if (requestEvent.cookie.has("userId")) {

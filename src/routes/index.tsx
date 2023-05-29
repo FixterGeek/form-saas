@@ -1,12 +1,21 @@
-import { component$, useSignal } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import {
+  $,
+  type PropFunction,
+  type QRL,
+  component$,
+  useSignal,
+} from "@builder.io/qwik";
+import { type DocumentHead } from "@builder.io/qwik-city";
 import "../styles/app.css";
+import { useGoogleCode } from "./layout";
+import Spinner from "~/components/router-head/spinner";
 
 const arrow =
   "https://firebasestorage.googleapis.com/v0/b/fixter-67253.appspot.com/o/forms%2FArrow%20Right%20(2).gif?alt=media&token=6e606528-cd49-41e6-9985-4f8eb90fedc5";
 const form = "https://i.imgur.com/SWfEgJN.png";
 export default component$(() => {
   const activeTab = useSignal(1);
+  const googleLogin = useGoogleCode();
 
   return (
     <main class="lg:max-w-6xl max-w-3xl mx-auto py-20 px-4">
@@ -171,6 +180,10 @@ export default component$(() => {
 
         <div class="flex flex-wrap gap-12 mt-8 justify-center">
           <PricingCard
+            onClickButton={$(() => {
+              googleLogin.submit();
+            })}
+            isLoading={googleLogin.isRunning}
             name="Free"
             description="Lorem ipsum dolor sit amet conse"
             price="0"
@@ -194,6 +207,7 @@ export default component$(() => {
             ]}
           />
           <PricingCard
+            cta="Volverme pro"
             name="PRO"
             description="Lorem ipsum dolor sit amet conse"
             price={activeTab.value === 1 ? 10 : 8}
@@ -265,10 +279,16 @@ export default component$(() => {
 
 const PricingCard = ({
   name,
+  cta,
+  isLoading,
   description,
   benefits,
   price,
+  onClickButton,
 }: {
+  cta?: string;
+  isLoading?: boolean;
+  onClickButton?: PropFunction<QRL<() => void>>;
   description: any;
   name: any;
   benefits: any;
@@ -304,7 +324,9 @@ const PricingCard = ({
       </div>
 
       <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-      <button class="btn w-full">¡Empezar!</button>
+      <button disabled={isLoading} onClick$={onClickButton} class="btn w-full">
+        {isLoading ? <Spinner /> : cta || "¡Empezar!"}
+      </button>
     </div>
   );
 };
