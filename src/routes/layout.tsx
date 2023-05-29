@@ -4,6 +4,7 @@ import {
   type RequestEventAction,
   type RequestEventLoader,
   routeLoader$,
+  Link,
 } from "@builder.io/qwik-city";
 import { getDB } from "~/db/db";
 import type { UserType } from "~/db/zod";
@@ -90,7 +91,9 @@ const Nav = component$(
     return (
       <nav class="h-20 fixed top-0 z-20  bg-white/30 dark:bg-black/60 backdrop-blur w-full">
         <section class="flex items-center justify-between py-4 px-4 max-w-3xl mx-auto lg:max-w-6xl ">
-          <h2 class="font-bold text-2xl">Formy</h2>
+          <Link href="/">
+            <h2 class="font-bold text-2xl">Formy</h2>
+          </Link>
           <div class="flex items-center gap-4">
             {/* Need to redirecto to dash */}
             <button
