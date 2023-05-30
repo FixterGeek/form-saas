@@ -93,8 +93,6 @@ export const onGet: RequestHandler = async (request) => {
     httpOnly: true,
     sameSite: "strict",
   });
-  // request.redirect(302, "/dash");
-
   // @TODO: signout
 };
 
