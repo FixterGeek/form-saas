@@ -1,9 +1,9 @@
 import {
-  $,
   type PropFunction,
   type QRL,
   component$,
   useSignal,
+  type JSXNode,
 } from "@builder.io/qwik";
 import { type DocumentHead } from "@builder.io/qwik-city";
 import "../styles/app.css";
@@ -13,6 +13,7 @@ import Spinner from "~/components/router-head/spinner";
 const arrow =
   "https://firebasestorage.googleapis.com/v0/b/fixter-67253.appspot.com/o/forms%2FArrow%20Right%20(2).gif?alt=media&token=6e606528-cd49-41e6-9985-4f8eb90fedc5";
 const form = "https://i.imgur.com/SWfEgJN.png";
+
 export default component$(() => {
   const activeTab = useSignal(1);
   const googleLogin = useGoogleCode();
@@ -20,12 +21,18 @@ export default component$(() => {
   return (
     <main class="lg:max-w-6xl max-w-3xl mx-auto py-20 px-4">
       <section class="mb-4 flex md:flex-row flex-col-reverse gap-8">
-        <h1 class="lg:text-6xl text-4xl font-bold flex-1">
-          <span class="text-3xl">¡Solo copia, pega y listo!.</span>
-          <br />
-          Tu propio formulario de contacto sin configuración. <br />
-          HTML y nada más.
-        </h1>
+        <div class="flex-1">
+          <h1 class="lg:text-6xl text-4xl font-bold flex-1">
+            <span class="text-3xl dark:text-slate-100">
+              Copia, pega y listo.
+            </span>
+            <br />
+            Tu propio formulario de contacto sin configuración. <br />
+            <span class="dark:text-slate-100">HTML y nada más.</span>
+          </h1>
+          <BigCTA />
+          <p class="text-xs">Inicia con una cuenta gratuita.</p>
+        </div>
         <div class="flex-1 aspect-video rounded-2xl overflow-hidden ">
           <video
             loop
@@ -180,9 +187,13 @@ export default component$(() => {
 
         <div class="flex flex-wrap gap-12 mt-8 justify-center">
           <PricingCard
-            onClickButton={$(() => {
-              googleLogin.submit();
-            })}
+            button={
+              <BigCTA
+                onClick={() => {
+                  googleLogin.submit();
+                }}
+              />
+            }
             isLoading={googleLogin.isRunning}
             name="Free"
             description="Lorem ipsum dolor sit amet conse"
@@ -190,7 +201,7 @@ export default component$(() => {
             benefits={[
               {
                 emoji: "📋",
-                title: "2 proyectos",
+                title: "1 proyecto",
               },
               {
                 emoji: "💬",
@@ -207,7 +218,7 @@ export default component$(() => {
             ]}
           />
           <PricingCard
-            cta="Volverme pro"
+            cta="Quiero ser pro"
             name="PRO"
             description="Lorem ipsum dolor sit amet conse"
             price={activeTab.value === 1 ? 10 : 8}
@@ -227,6 +238,10 @@ export default component$(() => {
               {
                 emoji: "🎨",
                 title: "Personalización de formularios",
+              },
+              {
+                emoji: "💾",
+                title: "Respaldos ilimitados",
               },
               {
                 emoji: "🎯",
@@ -279,6 +294,7 @@ export default component$(() => {
 
 const PricingCard = ({
   name,
+  button,
   cta,
   isLoading,
   description,
@@ -286,6 +302,7 @@ const PricingCard = ({
   price,
   onClickButton,
 }: {
+  button?: JSXNode;
   cta?: string;
   isLoading?: boolean;
   onClickButton?: PropFunction<QRL<() => void>>;
@@ -324,9 +341,19 @@ const PricingCard = ({
       </div>
 
       <hr class="my-6 bg-[#EDEDF1] dark:bg-[#2E2E2E] h-[1px] border-none" />
-      <button disabled={isLoading} onClick$={onClickButton} class="btn w-full">
-        {isLoading ? <Spinner /> : cta || "¡Empezar!"}
-      </button>
+
+      {!button && (
+        <div class="pt-8">
+          <button
+            disabled={isLoading}
+            onClick$={onClickButton}
+            class="btn w-full"
+          >
+            {isLoading ? <Spinner /> : cta || "¡Comenzar!"}
+          </button>
+        </div>
+      )}
+      <div class="flex flex-col">{button && button}</div>
     </div>
   );
 };
@@ -356,3 +383,17 @@ export const head: DocumentHead = {
     },
   ],
 };
+
+type BigCTAProps = {
+  onClick?: () => void;
+};
+export const BigCTA = component$<BigCTAProps>(({ onClick }) => {
+  return (
+    <button
+      onClick$={onClick}
+      class="bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl text-white py-3 px-8 hover:scale-105 transition-all mt-8 mb-1 block text-3xl font-thin"
+    >
+      Comenzar &rarr;
+    </button>
+  );
+});

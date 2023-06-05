@@ -8,6 +8,7 @@ import {
 } from "@builder.io/qwik-city";
 import { getDB } from "~/db/db";
 import type { UserType } from "~/db/zod";
+import { twMerge } from "tailwind-merge";
 
 const googleURL = "https://accounts.google.com/o/oauth2/v2/auth?";
 
@@ -45,7 +46,7 @@ export const useUser = routeLoader$(async (request: RequestEventLoader) => {
       },
     });
     if (!user) {
-      request.cookie.delete("userId"); // this is potentialy failing?
+      request.cookie.delete("userId"); // is this potentially failing?
     }
     return user as UserType;
   }
@@ -101,14 +102,19 @@ const Nav = component$(
               // getToken();
               // }}
               onClick$={() => action.submit()}
-              class="font-bold"
+              class={twMerge(
+                "font-normal",
+                user
+                  ? ""
+                  : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-3 rounded-xl hover:scale-105 transition-all"
+              )}
             >
               {action.isRunning ? (
                 <progress class="progress w-12"></progress>
               ) : user ? (
                 user.email
               ) : (
-                "Login"
+                "¡Crear mi form!"
               )}
             </button>
             <label for="theme text-xs">{theme}</label>
